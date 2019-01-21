@@ -3,20 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:strings/strings.dart' as strings;
 import '../tools/general_functions.dart';
+import '../tools/custom_forms.dart';
 import '../models/pokemon_list_model.dart';
-
-class CustomRect extends CustomClipper<Rect>{
-  @override
-  Rect getClip(Size size) {
-    Rect rect = Rect.fromLTRB(-size.width, -20.0, size.width, size.height+20);
-    return rect;
-  }
-  
-  @override
-  bool shouldReclip(CustomRect oldClipper) {
-    return true;
-  }
-}
+import '../views/pokemon_profile.dart';
+import '../resources/loader.dart';
 
 class PokemonList extends StatefulWidget {
   @override
@@ -58,14 +48,14 @@ class _PokemonListState extends State<PokemonList> {
           future: pokeList,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-
               return createListView(context, snapshot);
+
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
+              
             }
 
-            // By default, show a loading spinner
-            return CircularProgressIndicator(); 
+            return LoaderAnimation(); 
           },
         )
       ),
@@ -75,71 +65,88 @@ class _PokemonListState extends State<PokemonList> {
   Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
     List<PokeList> values = snapshot.data;
     return ListView.builder(
+      
       itemCount: values.length,
       itemBuilder: (BuildContext context, int index) {
         String pokemonNumber = addZeroes(values[index].number);
 
-        return Container(
-          
-          // padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorDark,
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.grey,
-                width: 1,
-              )
-            )
-          ),
-          child: Row(
-            children: <Widget>[
-              ClipOval(
-                clipper: CustomRect(),
-                child: Container(
-                  decoration: BoxDecoration(
-                  color: Colors.white,
+        return Hero(
+            tag: 'pokemon'+pokemonNumber,
+            child:  
+            GestureDetector(
+            onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PokemonProfile(pokemonSelected: values[index]),
                   ),
-                  width: 100,
-                  height: 100,
-                  // color: Colors.grey,
-                  child: Image.network(
-                    '$imageurl/$pokemonNumber.png',
-                    width: 65,
-                    height: 65,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "#"+pokemonNumber,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w300,
-                            fontSize: 30,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          strings.capitalize(values[index].name),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                );
+              },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColorDark,
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.grey,
+                    width: 1,
+                  )
                 )
               ),
-            ],
+              child: Row(
+                children: <Widget>[
+                  ClipOval(
+                    clipper: CustomRect(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      width: 100,
+                      height: 100,
+                      child: Image.network(
+                        '$imageurl/$pokemonNumber.png',
+                        width: 65,
+                        height: 65,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "#"+pokemonNumber,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 30,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              strings.capitalize(values[index].name),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ),
+                  Icon(
+                    Icons.chevron_right,
+                    color: Colors.grey,
+                    size: 40,
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },

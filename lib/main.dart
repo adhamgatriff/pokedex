@@ -19,11 +19,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pokedex',
       theme: buildThemeData(),
-      home: ClosedPokedex(),
+      home: SafeArea(
+        child: ClosedPokedex(),
+      ),
       routes: routes(),
     );
   }
-
-
 }
 

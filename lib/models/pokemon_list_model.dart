@@ -1,4 +1,3 @@
-
 class PokeList {
 
   final String name;
