@@ -31,12 +31,11 @@ class _LoaderAnimationState extends State<LoaderAnimation>
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      color: Colors.white,
       child: AnimatedBuilder(
         animation: _controller,
         child: Container(
-          height: 150.0,
-          width: 150.0,
+          height: 100.0,
+          width: 100.0,
           child: Image.asset('assets/cyndaquil.png'),
         ),
         builder: (BuildContext context, Widget _widget) {

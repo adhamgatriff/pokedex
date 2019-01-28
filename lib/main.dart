@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import './tools/general_functions.dart';
 import './tools/theme.dart';
 import './tools/routes.dart';
 
@@ -11,12 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0xFFdc0a2d),
-      statusBarColor: Color(0xFFdc0a2d),
-    ));
+    changeStatusBar(Color(0xFFdc0a2d));
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Pokedex',
       theme: buildThemeData(),
       home: SafeArea(

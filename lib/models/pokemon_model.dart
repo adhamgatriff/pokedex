@@ -5,8 +5,8 @@ class Pokemon {
   final List stats;
   final List types;
   final int baseExperience;
-  final int weight;
-  final int height;
+  final double weight;
+  final double height;
 
   Pokemon({ this.abilities, this.baseExperience, this.moves, this.stats, this.types, this.weight, this.height });
 
@@ -17,8 +17,8 @@ class Pokemon {
       moves: json['moves'] as List,
       stats: json['stats'] as List,
       types: json['types'] as List,
-      weight: json['weight'],
-      height: json['height'],
+      weight: json['weight'] * 0.1, //kg
+      height: json['height'] * 0.1, // m
     );
   }
 }
@@ -33,10 +33,11 @@ class PokemonSpecies {
   PokemonSpecies({ this.color, this.genus, this.flavorText, this.captureRate });
 
   factory PokemonSpecies.fromJson(Map<String, dynamic> json) {
+
     return PokemonSpecies (
       color: json['color']['name'] as String,
       genus: json['genera'][2]['genus'] as String,
-      flavorText: json['flavor_text_entries'][1]['flavor_text'] as String,
+      flavorText: json['flavor_text_entries'][1]['flavor_text'].replaceAll('\n', ' ') as String,
       captureRate: json['capture_rate'],
     );
   }

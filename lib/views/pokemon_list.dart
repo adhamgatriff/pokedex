@@ -14,7 +14,7 @@ class PokemonList extends StatefulWidget {
 }
 
 class _PokemonListState extends State<PokemonList> {
-
+  
   final String url = 'http://pokeapi.co/api/v2/pokemon/?limit=811';
   final String imageurl = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail';
   Future<List<PokeList>> pokeList;
@@ -41,6 +41,8 @@ class _PokemonListState extends State<PokemonList> {
 
   @override
   Widget build(BuildContext context) {
+    changeStatusBar(Color(0xFFdc0a2d));
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: Text('List of Pokemons')),
@@ -100,12 +102,12 @@ class _PokemonListState extends State<PokemonList> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                       ),
-                      width: 100,
-                      height: 100,
+                      width: 80,
+                      height: 80,
                       child: Image.network(
                         '$imageurl/$pokemonNumber.png',
-                        width: 65,
-                        height: 65,
+                        width: 50,
+                        height: 50,
                       ),
                     ),
                   ),
@@ -122,7 +124,7 @@ class _PokemonListState extends State<PokemonList> {
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w300,
-                                fontSize: 30,
+                                fontSize: 22,
                               ),
                             ),
                           ),
@@ -131,7 +133,7 @@ class _PokemonListState extends State<PokemonList> {
                               strings.capitalize(values[index].name),
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             ),
                           )

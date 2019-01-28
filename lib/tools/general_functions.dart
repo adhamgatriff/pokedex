@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 String addZeroes(int number) {
 	String num = number.toString();
@@ -9,6 +10,15 @@ String addZeroes(int number) {
   }
 
   return num;
+}
+
+changeStatusBar(Color color) {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor: color,
+      statusBarColor: color,
+    )
+  );
 }
 
 Color setBackgroundColor(String pokemonColor) {
@@ -34,7 +44,7 @@ Color setBackgroundColor(String pokemonColor) {
     return Colors.green[300];
 
   } else if (pokemonColor == 'red') {
-    return Colors.red[300];
+    return Colors.red[400];
 
   } else if (pokemonColor == 'white') {
     return Colors.grey[100];
