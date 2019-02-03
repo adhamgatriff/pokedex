@@ -45,7 +45,7 @@ class _PokemonListState extends State<PokemonList> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('List of Pokemons')),
+        appBar: AppBar(title: Text('Pokemon list')),
         body: FutureBuilder<List<PokeList>>(
           future: pokeList,
           builder: (context, snapshot) {

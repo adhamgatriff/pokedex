@@ -63,50 +63,56 @@ class _PokemonProfileState extends State<PokemonProfile> {
     String pokemonNumber = addZeroes(widget.pokemonSelected.number);
 
     if(pokemon != null) {
-      changeStatusBar(setBackgroundColor(pokemon.pokemonSpecies.color));      
+      changeStatusBar(setBackgroundColor(pokemon.pokemonSpecies.color)); 
     }
 
     return SafeArea(
       child: Material(
         child: AnimatedContainer(
           duration: Duration(seconds: 1),
-          color: pokemon?.pokemonSpecies?.color == null ?  Colors.grey: setBackgroundColor(pokemon.pokemonSpecies.color),
-          child: Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topLeft,
-                child: FlatButton.icon(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    size: 22.0,
-                    color: Colors.black87,
-                  ),
-                  label: Text(
-                    'Back', 
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              basicInfo(pokemonNumber),
-              pokemonSpecies(),
-              pokemonAbilities(),
-            ],
+          color: pokemon == null ?  Colors.grey: setBackgroundColor(pokemon.pokemonSpecies.color),
+          child: CustomScrollView(
+            slivers: <Widget>[
+              topBar(pokemonNumber),
+              SliverFillRemaining(
+                child: Column(
+                  children: <Widget>[
+                    pokemonSpecies(),
+                    pokemonAbilities(),
+                  ],
+                )
+              )
+            ]
           ),
         )
-      )
+      ),
+    );
+  }
+
+  SliverAppBar topBar(String pokemonNumber) {
+    return SliverAppBar(
+      backgroundColor: pokemon == null ?  Colors.grey: setBackgroundColor(pokemon.pokemonSpecies.color),
+      title: Text(
+        strings.capitalize(widget.pokemonSelected.name),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18.0,
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+      pinned: true,
+      expandedHeight: 110.0,
+      floating: false,
+      titleSpacing: 0.0,
+      flexibleSpace: FlexibleSpaceBar(
+        background: basicInfo(pokemonNumber),
+      ),
     );
   }
 
   Container basicInfo(String pokemonNumber) {
     return Container(
-      margin: EdgeInsets.only(bottom: 5, left: 5, right: 5),
+      margin: EdgeInsets.only(left: 5, right: 5, top: 10),
       height: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -128,13 +134,6 @@ class _PokemonProfileState extends State<PokemonProfile> {
                           top: 10.0,
                           bottom: 0.0,
                           right: 5.0,
-                        ),
-                        child: Text(
-                          strings.capitalize(widget.pokemonSelected.name),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          ),
                         ),
                       ),
                     ),
@@ -254,7 +253,6 @@ class _PokemonProfileState extends State<PokemonProfile> {
             ),
           ),
           Container(
-            // height: 210,
             margin: EdgeInsets.only(left: 5, top: 10, right: 5, bottom: 5),
             decoration: BoxDecoration(
               color: Color.fromARGB(100, 0, 0, 0),
@@ -361,12 +359,12 @@ class _PokemonProfileState extends State<PokemonProfile> {
       return Container();
     }
 
-  List <dynamic> abilities = pokemon.pokemon.abilities;
-  abilities.sort((a, b) => a['slot'].compareTo(b['slot']));
+    List <dynamic> abilities = pokemon.pokemon.abilities;
+    abilities.sort((a, b) => a['slot'].compareTo(b['slot']));
   
     return Container(
       margin: EdgeInsets.only(top: 10),
-      child: Column(
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Text(

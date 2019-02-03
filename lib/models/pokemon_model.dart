@@ -37,7 +37,7 @@ class PokemonSpecies {
     return PokemonSpecies (
       color: json['color']['name'] as String,
       genus: json['genera'][2]['genus'] as String,
-      flavorText: json['flavor_text_entries'][1]['flavor_text'].replaceAll('\n', ' ') as String,
+      flavorText: json['flavor_text_entries'].toList().firstWhere((text) => text['language']['name'] == 'en', orElse: () => ' ')['flavor_text'].replaceAll('\n', ' '),
       captureRate: json['capture_rate'],
     );
   }
