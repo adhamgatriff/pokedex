@@ -5,6 +5,6 @@ import '../views/pokemon_profile.dart';
 Map<String, WidgetBuilder> routes() {
   return {
     'list': (context) => PokemonList(),
-    'profile': (context) => PokemonProfile(),
+    'profile': (context) => PokemonProfile(pokemonSelected: null,),
   };
 }

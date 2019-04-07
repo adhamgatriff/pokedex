@@ -14,9 +14,9 @@ class PokemonList extends StatefulWidget {
 }
 
 class _PokemonListState extends State<PokemonList> {
-  
   final String url = 'http://pokeapi.co/api/v2/pokemon/?limit=811';
-  final String imageurl = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail';
+  final String imageurl =
+      'https://assets.pokemon.com/assets/cms2/img/pokedex/detail';
   Future<List<PokeList>> pokeList;
 
   @override
@@ -26,14 +26,12 @@ class _PokemonListState extends State<PokemonList> {
   }
 
   Future<List<PokeList>> apiCall() async {
-    final response = await http.get(url); 
+    final response = await http.get(url);
 
     if (response.statusCode == 200) {
-
       return (json.decode(response.body)['results'] as List)
-        .map((data) => PokeList.fromJson(data))
-        .toList();
-
+          .map((data) => PokeList.fromJson(data))
+          .toList();
     } else {
       throw Exception('Failed to load post');
     }
@@ -45,55 +43,49 @@ class _PokemonListState extends State<PokemonList> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Pokemon list')),
-        body: FutureBuilder<List<PokeList>>(
-          future: pokeList,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return createListView(context, snapshot);
+          appBar: AppBar(title: Text('Pokemon list')),
+          body: FutureBuilder<List<PokeList>>(
+            future: pokeList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return createListView(context, snapshot);
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
 
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-              
-            }
-
-            return LoaderAnimation(); 
-          },
-        )
-      ),
+              return LoaderAnimation();
+            },
+          )),
     );
   }
 
   Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
     List<PokeList> values = snapshot.data;
     return ListView.builder(
-      
       itemCount: values.length,
       itemBuilder: (BuildContext context, int index) {
         String pokemonNumber = addZeroes(values[index].number);
 
         return Hero(
-            tag: 'pokemon'+pokemonNumber,
-            child:  
-            GestureDetector(
+          tag: 'pokemon' + pokemonNumber,
+          child: GestureDetector(
             onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PokemonProfile(pokemonSelected: values[index]),
-                  ),
-                );
-              },
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      PokemonProfile(pokemonSelected: values[index]),
+                ),
+              );
+            },
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorDark,
-                border: Border(
-                  bottom: BorderSide(
+                  color: Theme.of(context).primaryColorDark,
+                  border: Border(
+                      bottom: BorderSide(
                     color: Colors.grey,
                     width: 1,
-                  )
-                )
-              ),
+                  ))),
               child: Row(
                 children: <Widget>[
                   ClipOval(
@@ -112,35 +104,34 @@ class _PokemonListState extends State<PokemonList> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "#"+pokemonNumber,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 22,
-                              ),
+                      child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "#" + pokemonNumber,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 22,
                             ),
                           ),
-                          Container(
-                            child: Text(
-                              strings.capitalize(values[index].name),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
+                        ),
+                        Container(
+                          child: Text(
+                            strings.capitalize(values[index].name),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
                             ),
-                          )
-                        ],
-                      ),
-                    )
-                  ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
                   Icon(
                     Icons.chevron_right,
                     color: Colors.grey,
@@ -155,8 +146,3 @@ class _PokemonListState extends State<PokemonList> {
     );
   }
 }
-
- 
-
-
-

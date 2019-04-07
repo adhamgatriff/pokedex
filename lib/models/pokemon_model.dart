@@ -1,3 +1,5 @@
+import '../tools/general_functions.dart';
+
 class Pokemon {
 
   final List abilities;
@@ -28,17 +30,31 @@ class PokemonSpecies {
   final String color;
   final String genus;
   final String flavorText;
+  final String evolutionChainUrl;
   final int captureRate;
 
-  PokemonSpecies({ this.color, this.genus, this.flavorText, this.captureRate });
+  PokemonSpecies({ this.color, this.genus, this.flavorText, this.captureRate, this.evolutionChainUrl });
 
   factory PokemonSpecies.fromJson(Map<String, dynamic> json) {
-
     return PokemonSpecies (
       color: json['color']['name'] as String,
       genus: json['genera'][2]['genus'] as String,
       flavorText: json['flavor_text_entries'].toList().firstWhere((text) => text['language']['name'] == 'en', orElse: () => ' ')['flavor_text'].replaceAll('\n', ' '),
       captureRate: json['capture_rate'],
+      evolutionChainUrl: json['evolution_chain']['url'],
+    );
+  }
+}
+
+class PokemonEvolutionChain {
+
+  final List chain;
+
+  PokemonEvolutionChain({ this.chain});
+
+  factory PokemonEvolutionChain.fromJson(Map<String, dynamic> json) {
+    return PokemonEvolutionChain (
+      chain: getChain(json['chain'], List<Map>(), true),
     );
   }
 }
